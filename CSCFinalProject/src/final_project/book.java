@@ -9,7 +9,7 @@ public class book {
 	protected String genre;
 	private boolean availability;
 	private boolean reserved;
-	static LinkedList<book> books;
+	static LinkedList<book> books = new LinkedList<>();
 
 	// default constructor
 	public book() {
@@ -22,7 +22,6 @@ public class book {
 
 	// book constructor
 	public book(int ISBN, String title, String author, String genre, boolean availability, boolean reserved) {
-		super();
 		this.ISBN = ISBN;
 		this.title = title;
 		this.author = author;
@@ -88,14 +87,6 @@ public class book {
 
 	public void setReserved(boolean reserved) {
 		this.reserved = reserved;
-	}
-
-	public LinkedList<book> getBooks() {
-		return books;
-	}
-
-	public void setBooks(LinkedList<book> books) {
-		book.books = books;
 	}
 
 	// toString() method
