@@ -79,34 +79,28 @@ public class librarian extends person implements librarian_procedures {
 
 	// interface methods implementation
 	@Override
-	public void searchBookByTitle(String title) {
-		boolean found = false;
+	public boolean searchBookByTitle(String title) {
 		for (book book : books) {
 			if (book.getTitle().equalsIgnoreCase(title)) {
 				System.out.println("book with title: " + title + " is found");
-				found = true;
-				break;
+				return true;
 			}
 		}
-
-		if (!found) {
-			System.out.println("book with title: " + title + " not found");
-		}
+		System.out.println("book with title: " + title + " not found");
+		return false;
 	}
 
 	@Override
-	public void searchBookByAuthor(String author) {
-		boolean found = false;
+	public boolean searchBookByAuthor(String author) {
 		for (book book : books) {
 			if (book.getAuthor().equalsIgnoreCase(author)) {
 				System.out.println("book from author: " + author + ", by the title: " + book.getTitle() + " is found");
-				found = true;
+				return true;
 			}
 		}
 
-		if (!found) {
-			System.out.println("book from author: " + author + " is not found");
-		}
+		System.out.println("book from author: " + author + " is not found");
+		return false;
 	}
 
 	@Override
@@ -190,18 +184,15 @@ public class librarian extends person implements librarian_procedures {
 	}
 
 	@Override
-	public void searchBookByGenre(String genre) {
-		boolean found = false;
+	public boolean searchBookByGenre(String genre) {
 		for (book book : books) {
 			if (book.getGenre().equalsIgnoreCase(genre)) {
 				System.out.println("book from genre: " + genre + ", by the title: " + book.getTitle() + " is found");
-				found = true;
+				return true;
 			}
 		}
-
-		if (!found) {
-			System.out.println("book from genre: " + genre + " is not found");
-		}
+		System.out.println("book from genre: " + genre + " is not found");
+		return false;
 	}
 
 }

@@ -1,14 +1,14 @@
 package final_project;
 
 public interface librarian_procedures {
-	public void SearchBookByTitle(String Title);
+	public boolean searchBookByTitle(String Title);
 
-	public void SearchBookByAuthor(String Name);
+	public boolean searchBookByAuthor(String Name);
 
-	public void SearchBookByGenre(String Genre);
+	public boolean searchBookByGenre(String Genre);
 
-	public void Add_User();
+	public void addUser();
 
-	public void AddBooks();
+	public void addBooks();
 
 }

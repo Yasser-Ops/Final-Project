@@ -1,16 +1,16 @@
 package final_project;
 
 public interface user_procedures {
-	public void SearchBookByTitle(String Title);
+	public boolean searchBookByTitle(String Title);
 
-	public void SearchBookByAuthor(String Name);
+	public boolean searchBookByAuthor(String Name);
 
-	public void SearchBookByGenre(String Genre);
+	public boolean searchBookByGenre(String Genre);
 
-	public void BorrowBook(String Title);
+	public void borrowBook(String Title);
 
-	public void ReturnBook(String Title);
+	public void returnBook(String Title);
 
-	public void ReserveBook(String Title);
+	public void reserveBook(String Title);
 
 }

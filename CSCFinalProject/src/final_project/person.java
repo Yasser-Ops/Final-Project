@@ -38,7 +38,7 @@ public abstract class person {
 	}
 
 	// abstract method
-	public abstract void checkInformation();
+	public abstract String checkInformation();
 
 	// toString() method
 	@Override
