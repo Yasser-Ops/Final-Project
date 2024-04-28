@@ -18,6 +18,34 @@ public class user extends person implements user_procedures {
 		super(u.getName(), u.getAge(), u.getGender());
 		this.libraryCardNum = u.libraryCardNum;
 	}
+	
+	public void addUser() {
+		Scanner sc = new Scanner(System.in);
+
+		System.out.println("enter name:");
+		String name = sc.nextLine();
+
+		System.out.println("enter age:");
+		int age = sc.nextInt();
+
+		if (age < 18 || age > 64) {
+			throw new IllegalArgumentException("age must be between 18 and 64");
+		}
+
+		System.out.println("enter gender:");
+		String gender = sc.next();
+
+		// random user ID
+		int userId;
+		int ub = 9999, lb = 1000;
+		userId = (int) (Math.random() * 100) % ((ub - lb) + 1) + lb;
+
+		user user = new user(name, age, gender, userId);
+
+		users.add(user);
+
+		System.out.println("user added successfully");
+	}
 
 	// getters and setters
 	public int getLibraryCardNum() {

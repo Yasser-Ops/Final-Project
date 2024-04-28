@@ -150,7 +150,7 @@ public class librarian extends person implements librarian_procedures {
 
 		System.out.println("enter the ISBN:");
 		int ISBN = sc.nextInt();
-
+		sc.nextLine();
 		System.out.println("enter book title:");
 		String title = sc.nextLine();
 
@@ -159,7 +159,6 @@ public class librarian extends person implements librarian_procedures {
 
 		System.out.print("enter book genre:");
 		String genre = sc.nextLine();
-
 		System.out.println("is it available? (0 for no, 1 for yes)");
 		int x = sc.nextInt();
 		boolean b = true;
