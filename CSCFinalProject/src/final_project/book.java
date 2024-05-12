@@ -89,10 +89,18 @@ public class book {
 		this.reserved = reserved;
 	}
 
+	public static LinkedList<book> getBooks() {
+		return books;
+	}
+
+	public static void setBooks(LinkedList<book> books) {
+		book.books = books;
+	}
+
 	// toString() method
 	@Override
 	public String toString() {
-		return "book [title=" + title + ", author=" + author + "ISBN=" + ISBN + ", availability=" + availability + "]";
+		return "book [title=" + title + ", author=" + author + ", ISBN=" + ISBN + ", availability=" + availability + "]";
 	}
 
 }

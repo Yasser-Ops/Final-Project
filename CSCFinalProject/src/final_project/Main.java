@@ -1,78 +1,59 @@
 package final_project;
 
-import java.util.Scanner;
-
-public class Main {
-
-	public static void printMenu() {
-		System.out.println("Choose an action :");
-		System.out.println("1- Add a librarian");
-		System.out.println("2- Add a user");
-		System.out.println("3- Add a book");
-		System.out.println("4- Search for a book by Author");
-		System.out.println("5- Search for a book by Title");
-		System.out.println("6- Search for a book by Genre");
-		System.out.println("7- Borrow a book");
-		System.out.println("8- Return a book");
-		System.out.println("9- Reserve a book");
-		System.out.println("10- Exit");
-	}
-	
+public class main {
 	public static void main(String[] args) {
-		Scanner sc = new Scanner(System.in);
-		librarian librarian = new librarian("default", 21, "Male", 1);
-		user user = new user("default", 21, "Male", 1);
-		book book = new book();
-		boolean running = true;
-		
-		while(running) {
-			printMenu();
-			int choice = sc.nextInt();
-			switch (choice) {
-			case 1:
-				librarian.addLibrarian();
-				break;
-			case 2:
-				user.addUser();
-				break;
-			case 3:
-				librarian.addBooks();
-				break;
-			case 4:
-				System.out.println("Enter author:");
-				String author = sc.next();
-				librarian.searchBookByAuthor(author);
-				break;
-			case 5:
-				System.out.println("Enter title:");
-				String title = sc.next();
-				librarian.searchBookByAuthor(title);
-				break;
-			case 6:
-				System.out.println("Enter genre:");
-				String genre = sc.next();
-				librarian.searchBookByGenre(genre);
-				break;
-			case 7:
-				System.out.println("Enter title");
-				String title1 = sc.next();
-				user.borrowBook(title1);
-				break;
-			case 8:
-				System.out.println("Enter title");
-				String title2 = sc.next();
-				user.returnBook(title2);
-				break;
-			case 9: 
-				System.out.println("Enter title");
-				String title3 = sc.next();
-				user.reserveBook(title3);
-				break;
-			case 10:
-				running = false;
-				break;
-			}
+		book.getBooks().add(new book(1, "a", "a", "a", true, false));
+		book.getBooks().add(new book(2, "b", "b", "b", true, false));
+		book b1 = new book(3, "c", "c", "c", true, false);
+		book.getBooks().add(b1);
+		book.getBooks().add(new book(4, "d", "d", "a", false, false));
+		librarian l1 = new librarian("ali", 20, "male", 2222);
+		librarian.getLibrarians().add(l1);
+		librarian.getLibrarians().add(new librarian("zoro", 25, "female", 3333));
+		l1.addLibrarian();
+		l1.addUser();
+		user.getUsers().add(new user("hussein", 21, "male", 2320074));
+		user u1 = new user("mahmoud", 18, "female", 2410000);
+		user.getUsers().add(u1);
+
+		System.out.println("books:");
+		for (book b : book.getBooks()) {
+			System.out.println(b.toString());
 		}
+
+		System.out.println("librarians:");
+		for (librarian l : librarian.getLibrarians()) {
+			System.out.println(l.toString());
+		}
+
+		System.out.println("users:");
+		for (user u : user.getUsers()) {
+			System.out.println(u.toString());
+		}
+
+		u1.searchBookByAuthor("a");
+		u1.searchBookByGenre("b");
+		u1.searchBookByTitle("d");
+		u1.searchBookByAuthor("a");
+		u1.borrowBook("a");
+		u1.returnBook("a");
+		u1.returnBook("c");
+		u1.reserveBook("d");
+		u1.borrowBook("d");
+
+		for (book i : book.getBooks()) {
+			System.out.println(i.toString());
+		}
+
+		u1.checkInformation();
+		l1.checkInformation();
+		l1.searchBookByAuthor("f");
+		l1.searchBookByAuthor("a");
+		l1.searchBookByGenre("m");
+		l1.searchBookByGenre("a");
+		l1.searchBookByTitle("c");
+		l1.searchBookByTitle("g");
+
 	}
 
 }

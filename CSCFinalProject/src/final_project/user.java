@@ -1,7 +1,7 @@
 package final_project;
 
 import java.util.*;
-import static final_project.book.books;
+import javax.swing.JOptionPane;
 
 public class user extends person implements user_procedures {
 	private int libraryCardNum;
@@ -18,34 +18,6 @@ public class user extends person implements user_procedures {
 		super(u.getName(), u.getAge(), u.getGender());
 		this.libraryCardNum = u.libraryCardNum;
 	}
-	
-	public void addUser() {
-		Scanner sc = new Scanner(System.in);
-
-		System.out.println("enter name:");
-		String name = sc.nextLine();
-
-		System.out.println("enter age:");
-		int age = sc.nextInt();
-
-		if (age < 18 || age > 64) {
-			throw new IllegalArgumentException("age must be between 18 and 64");
-		}
-
-		System.out.println("enter gender:");
-		String gender = sc.next();
-
-		// random user ID
-		int userId;
-		int ub = 9999, lb = 1000;
-		userId = (int) (Math.random() * 100) % ((ub - lb) + 1) + lb;
-
-		user user = new user(name, age, gender, userId);
-
-		users.add(user);
-
-		System.out.println("user added successfully");
-	}
 
 	// getters and setters
 	public int getLibraryCardNum() {
@@ -56,102 +28,132 @@ public class user extends person implements user_procedures {
 		this.libraryCardNum = libraryCardNum;
 	}
 
+	public static LinkedList<user> getUsers() {
+		return users;
+	}
+
+	public static void setUsers(LinkedList<user> users) {
+		user.users = users;
+	}
+
 	// checkInformation() method override
 	@Override
 	public String checkInformation() {
-		return "name: " + getName() + "\nage: " + getAge() + "\ngender: " + getGender() + "\nlibrary card number: "
-				+ libraryCardNum;
+		JOptionPane.showMessageDialog(null, super.toString() + "\ncard number:" + this.libraryCardNum);
+		return "";
 	}
 
 	// interface methods implementation
 	@Override
-	public boolean searchBookByTitle(String title) {
-		for (book book : books) {
-			if (book.getTitle().equalsIgnoreCase(title)) {
-				System.out.println("book with title: " + title + " is found");
-				return true;
+	public void searchBookByTitle(String title) {
+		StringBuilder result = new StringBuilder();
+		boolean f = false;
+		for (book b : book.getBooks()) {
+			if (b.getTitle().equals(title)) {
+				f = true;
+				result.append(b.toString()).append("\n");
+				break;
 			}
 		}
-		System.out.println("book with title: " + title + " not found");
-		return false;
+		if (f) {
+			JOptionPane.showMessageDialog(null, "Search Results for Title '" + title + "':\n" + result.toString());
+		} else {
+			JOptionPane.showMessageDialog(null, "no books found with the title '" + title + "'");
+		}
 	}
 
 	@Override
-	public boolean searchBookByAuthor(String author) {
-		for (book book : books) {
-			if (book.getAuthor().equalsIgnoreCase(author)) {
-				System.out.println("book from author: " + author + ", by the title: " + book.getTitle() + " is found");
-				return true;
+	public void searchBookByAuthor(String author) {
+		StringBuilder result = new StringBuilder();
+		Boolean f = false;
+		for (book b : book.getBooks()) {
+			if (b.getAuthor().equals(author)) {
+				f = true;
+				result.append(b.getTitle()).append("\n");
 			}
 		}
-		System.out.println("book from author: " + author + " is not found");
-		return false;
+		if (f) {
+			JOptionPane.showMessageDialog(null, "books by '" + author + "':\n" + result.toString());
+		} else {
+			JOptionPane.showMessageDialog(null, "no books found by '" + author + "'");
+		}
+
 	}
 
 	@Override
-	public boolean searchBookByGenre(String genre) {
-		for (book book : books) {
-			if (book.getGenre().equalsIgnoreCase(genre)) {
-				System.out.println("book from genre: " + genre + ", by the title: " + book.getTitle() + " is found");
-				return true;
+	public void searchBookByGenre(String genre) {
+		StringBuilder result = new StringBuilder();
+		boolean f = false;
+		for (book b : book.getBooks()) {
+			if (b.getGenre().equals(genre)) {
+				f = true;
+				result.append(b.getTitle()).append("\n");
 			}
 		}
-		System.out.println("book from genre: " + genre + " is not found");
-		return false;
+		if (f) {
+			JOptionPane.showMessageDialog(null, "Books in '" + genre + "':\n" + result.toString());
+		} else {
+			JOptionPane.showMessageDialog(null, "no books found in '" + genre + "'");
+		}
+
 	}
 
 	@Override
 	public void borrowBook(String title) {
-		for (book book : books) {
-			if (book.getTitle().equalsIgnoreCase(title)) {
-				if (book.isAvailability() && !book.isReserved()) {
-					// book is available and not reserved, so borrow it
-					book.setAvailability(false);
-					System.out.println("book by the title: " + title + ", is borrowed successfully");
-					return;
-				} else {
-					System.out.println("book is not available or reserved");
-					return;
+		for (book b : book.getBooks()) {
+			if (b.getTitle().equals(title)) {
+				if (b.isAvailability() == true) {
+					if (b.isReserved() == false) {
+						b.setAvailability(false);
+						JOptionPane.showMessageDialog(null, "the book '" + title + "' has been borrowed");
+						return;
+					} else {
+						JOptionPane.showMessageDialog(null, "the book '" + title + "' cannot be borrowed");
+						return;
+					}
 				}
+
 			}
 		}
-		System.out.println("book does not exist");
+		JOptionPane.showMessageDialog(null, "the book '" + title + "' does not exist");
 	}
 
 	@Override
-	public void returnBook(String title) {
-		for (book book : books) {
-			if (book.getTitle().equalsIgnoreCase(title)) {
-				if (!book.isAvailability() && !book.isReserved()) {
-					// book is borrowed, so return it
-					book.setAvailability(true);
-					System.out.println("book by the title: " + title + ", is returned successfully");
-					return;
-				} else {
-					System.out.println("book is not borrowed");
-					return;
+	public book returnBook(String title) {
+		for (book b : book.getBooks()) {
+			if (b.getTitle().equals(title)) {
+				if (b.isAvailability() == false) {
+					if (b.isReserved() == false) {
+						return b;
+					} else {
+						JOptionPane.showMessageDialog(null, "the book '" + title + "' cannot be returned");
+						return null;
+					}
 				}
 			}
 		}
-		System.out.println("book does not exist");
+		JOptionPane.showMessageDialog(null, "the book '" + title + "' does not exist");
+		return null;
 	}
 
 	@Override
 	public void reserveBook(String title) {
-		for (book book : books) {
-			if (book.getTitle().equalsIgnoreCase(title)) {
-				if (book.isAvailability() && !book.isReserved()) {
-					// book is available and not reserved, so reserve it
-					book.setReserved(true);
-					System.out.println("book by the title: " + title + ", is reserved");
-					return;
-				} else {
-					System.out.println("book is not available or already reserved");
-					return;
+		for (book b : book.getBooks()) {
+			if (b.getTitle().equals(title)) {
+				if (b.isAvailability() == true) {
+					if (b.isReserved() == false) {
+						b.setReserved(true);
+						JOptionPane.showMessageDialog(null, "the book '" + title + "' has been reserved");
+						return;
+					} else {
+						JOptionPane.showMessageDialog(null, "the book '" + title + "' cannot be reserved");
+						return;
+					}
 				}
+
 			}
 		}
-		System.out.println("book does not exist");
+		JOptionPane.showMessageDialog(null, "the book '" + title + "' does not exist");
 	}
 
 }

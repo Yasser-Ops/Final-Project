@@ -1,26 +1,25 @@
 package final_project;
 
 import java.util.*;
-import static final_project.book.books;
-import static final_project.user.users;
+
+import javax.swing.JOptionPane;
 
 public class librarian extends person implements librarian_procedures {
 	private int employeeID;
 	static LinkedList<librarian> librarians = new LinkedList<>();
 
-	// constructor
-	public librarian(String name, int age, String gender, int employeeID) {
-		super(name, age, gender);
+	public librarian(String Name, int Age, String gender, int employeeID) {
+		super(Name, Age, gender);
 		this.employeeID = employeeID;
+
 	}
 
-	// copy constructor
+	// Copy constructor
 	public librarian(librarian l) {
 		super(l.getName(), l.getAge(), l.getGender());
 		this.employeeID = l.employeeID;
 	}
 
-	// getters and setters
 	public int getEmployeeID() {
 		return employeeID;
 	}
@@ -29,169 +28,159 @@ public class librarian extends person implements librarian_procedures {
 		this.employeeID = employeeID;
 	}
 
-	// addLibrarian() method
+	public static LinkedList<librarian> getLibrarians() {
+		return librarians;
+	}
+
+	public static void setLibrarians(LinkedList<librarian> librarians) {
+		librarian.librarians = librarians;
+	}
+
 	public void addLibrarian() {
-		Scanner sc = new Scanner(System.in);
 
-		System.out.println("enter name:");
-		String name = sc.nextLine();
+		Random random = new Random();
+		int generatedID = random.nextInt(9000) + 1000;
+		int finalGeneratedID = generatedID;
+		generatedID = librarians.stream().anyMatch(lib -> lib.getEmployeeID() == finalGeneratedID)
+				? random.nextInt(9000) + 1000
+				: generatedID;
+		librarian newLibrarian = new librarian(this.getName(), this.getAge(), this.getGender(), generatedID);
+		librarians.add(newLibrarian);
+		JOptionPane.showMessageDialog(null, "Employee ID is: " + generatedID, "employee ID",
+				JOptionPane.INFORMATION_MESSAGE);
 
-		System.out.println("enter age:");
-		int age = sc.nextInt();
-
-		if (age < 18 || age > 64) {
-			throw new IllegalArgumentException("age must be between 18 and 64");
-		}
-
-		System.out.println("enter gender:");
-		String gender = sc.next();
-
-		// random employee ID
-		int employeeID;
-		int ub = 9999, lb = 1000;
-		do {
-			employeeID = (int) (Math.random() * 100) % ((ub - lb) + 1) + lb;
-		} while (isEmployeeIDExists(employeeID));
-
-		librarian lib = new librarian(name, age, gender, employeeID);
-
-		librarians.add(lib);
-
-		System.out.println("librarian added successfully");
+		JOptionPane.showMessageDialog(null, "registered successfully");
 	}
 
-	// method to check if employeeID already exists
-	private boolean isEmployeeIDExists(int employeeID) {
-		for (librarian librarian : librarians) {
-			if (librarian.getEmployeeID() == employeeID) {
-				return true;
-			}
-		}
-		return false;
-	}
-
-	// checkInformation() method override
 	@Override
 	public String checkInformation() {
-		return "name: " + getName() + "\nage: " + getAge() + "\ngender: " + getGender() + "\nemployee ID: "
-				+ employeeID;
+		JOptionPane.showMessageDialog(null, super.toString() + "\nEmployee ID:" + this.getEmployeeID());
+		return "";
 	}
 
-	// interface methods implementation
 	@Override
-	public boolean searchBookByTitle(String title) {
-		for (book book : books) {
-			if (book.getTitle().equalsIgnoreCase(title)) {
-				System.out.println("book with title: " + title + " is found");
-				return true;
+	public void searchBookByTitle(String Title) {
+		StringBuilder result = new StringBuilder();
+		boolean i = false;
+		for (book j : book.getBooks()) {
+			if (j.getTitle().equals(Title)) {
+				i = true;
+				result.append(j.toString()).append("\n");
+				break;
 			}
 		}
-		System.out.println("book with title: " + title + " not found");
-		return false;
+		if (i) {
+			JOptionPane.showMessageDialog(null, "search results for '" + Title + "':\n" + result.toString());
+		} else {
+			JOptionPane.showMessageDialog(null, "no books found by thr title: '" + Title + "'");
+		}
 	}
 
 	@Override
-	public boolean searchBookByAuthor(String author) {
-		for (book book : books) {
-			if (book.getAuthor().equalsIgnoreCase(author)) {
-				System.out.println("book from author: " + author + ", by the title: " + book.getTitle() + " is found");
-				return true;
+	public void searchBookByAuthor(String Name) {
+		StringBuilder result = new StringBuilder();
+		Boolean k = false;
+		for (book w : book.getBooks()) {
+			if (w.getAuthor().equals(Name)) {
+				k = true;
+				result.append(w.getTitle()).append("\n");
 			}
 		}
-
-		System.out.println("book from author: " + author + " is not found");
-		return false;
+		if (k) {
+			JOptionPane.showMessageDialog(null, "books by author '" + Name + "':\n" + result.toString());
+		} else {
+			JOptionPane.showMessageDialog(null, "no books found by '" + Name + "'");
+		}
 	}
 
 	@Override
-	public void addUser() {
-		Scanner sc = new Scanner(System.in);
-
-		System.out.println("enter user name: ");
-		String name = sc.nextLine();
-
-		System.out.println("enter user age: ");
-		int age = sc.nextInt();
-
-		if (age < 18 || age > 100) {
-			throw new IllegalArgumentException("age must be between 18 and 100");
-		}
-
-		System.out.println("enter user gender: ");
-		String gender = sc.next();
-
-		// random library card
-		int libraryCard;
-		int ub = 9999, lb = 1000;
-		do {
-			libraryCard = (int) (Math.random() * 100) % ((ub - lb) + 1) + lb;
-		} while (isLibraryCardExists(libraryCard));
-
-		user user = new user(name, age, gender, libraryCard);
-
-		users.add(user);
-
-		System.out.println("user added successfully");
-	}
-
-	// method to check if library card already exists
-	private boolean isLibraryCardExists(int libraryCard) {
-		for (user user : users) {
-			if (user.getLibraryCardNum() == libraryCard) {
-				return true;
+	public void searchBookByGenre(String Genre) {
+		StringBuilder result = new StringBuilder();
+		boolean b = false;
+		for (book c : book.getBooks()) {
+			if (c.getGenre().equals(Genre)) {
+				b = true;
+				result.append(c.getTitle()).append("\n");
 			}
 		}
-		return false;
+		if (b) {
+			JOptionPane.showMessageDialog(null, "books in genre '" + Genre + "':\n" + result.toString());
+		} else {
+			JOptionPane.showMessageDialog(null, "no books found in '" + Genre + "'");
+		}
 	}
 
 	@Override
-	public void addBooks() {
-		Scanner sc = new Scanner(System.in);
-
-		System.out.println("enter the ISBN:");
-		int ISBN = sc.nextInt();
-		sc.nextLine();
-		System.out.println("enter book title:");
-		String title = sc.nextLine();
-
-		System.out.print("enter book author:");
-		String author = sc.nextLine();
-
-		System.out.print("enter book genre:");
-		String genre = sc.nextLine();
-		System.out.println("is it available? (0 for no, 1 for yes)");
-		int x = sc.nextInt();
-		boolean b = true;
-		if (x == 0) {
-			b = false;
-		} else if (x == 1) {
-			b = true;
-		}
-
-		System.out.println("is it reserved? (0 for no, 1 for yes)");
-		int y = sc.nextInt();
-		boolean t = true;
-		if (y == 0) {
-			t = false;
-		} else if (y == 1) {
-			t = true;
-		}
-
-		book book = new book(ISBN, title, author, genre, b, t);
-		books.add(book);
-		System.out.println("book added successfully");
+	public user addUser() {
+		Random random = new Random();
+		int generatedLibraryCard = random.nextInt(9000) + 1000;
+		user newUser = new user(this.getName(), this.getAge(), this.getGender(), generatedLibraryCard);
+		user.getUsers().add(newUser);
+		JOptionPane.showMessageDialog(null, "library card number: " + generatedLibraryCard, "library card number",
+				JOptionPane.INFORMATION_MESSAGE);
+		JOptionPane.showMessageDialog(null, "registered successfully");
+		return newUser;
 	}
 
 	@Override
-	public boolean searchBookByGenre(String genre) {
-		for (book book : books) {
-			if (book.getGenre().equalsIgnoreCase(genre)) {
-				System.out.println("book from genre: " + genre + ", by the title: " + book.getTitle() + " is found");
-				return true;
+	public book addBooks(book b) {
+		book newBook = new book(b.getISBN(), b.getTitle(), b.getAuthor(), b.getGenre(), b.isAvailability(),
+				b.isReserved());
+		book.getBooks().add(newBook);
+		return newBook;
+	}
+
+	public void BorrowBook(String Title) {
+		for (book x : book.getBooks()) {
+			if (x.getTitle().equals(Title)) {
+				if (x.isAvailability() == true) {
+					if (x.isReserved() == false) {
+						x.setAvailability(false);
+						JOptionPane.showMessageDialog(null, Title + " has been borrowed");
+						return;
+					} else {
+						JOptionPane.showMessageDialog(null, Title + " cannot be borrowed");
+						return;
+					}
+				}
 			}
 		}
-		System.out.println("book from genre: " + genre + " is not found");
-		return false;
+		JOptionPane.showMessageDialog(null, Title + " does not exist");
+	}
+
+	public book returnBook(String Title) {
+		for (book h : book.getBooks()) {
+			if (h.getTitle().equals(Title)) {
+				if (h.isAvailability() == false) {
+					if (h.isReserved() == false) {
+						return h;
+					} else {
+						JOptionPane.showMessageDialog(null, Title + " cannot be returned");
+						return null;
+					}
+				}
+			}
+		}
+		JOptionPane.showMessageDialog(null, Title + " does not exist");
+		return null;
+	}
+
+	public void reserveBook(String Title) {
+		for (book d : book.getBooks()) {
+			if (d.getTitle().equals(Title)) {
+				if (d.isAvailability() == true) {
+					if (d.isReserved() == false) {
+						d.setReserved(true);
+						JOptionPane.showMessageDialog(null, Title + " has been reserved");
+						return;
+					} else {
+						JOptionPane.showMessageDialog(null, Title + " cannot be reserved");
+						return;
+					}
+				}
+			}
+		}
+		JOptionPane.showMessageDialog(null, Title + " does not exist");
 	}
 
 }
